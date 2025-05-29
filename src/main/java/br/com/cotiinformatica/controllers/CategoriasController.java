@@ -1,6 +1,5 @@
 package br.com.cotiinformatica.controllers;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,26 +22,16 @@ public class CategoriasController {
 
 	//Instanciando o repositório de categorias de forma automática
 	@Autowired CategoriaRepository categoriaRepository;
+	@Autowired ModelMapper mapper;
 	
 	@GetMapping
 	@Operation(summary = "Consulta de categorias", 
 	  	   description = "Retorna todas as categorias cadastradas no sistema.")
 	public List<CategoriaResponseDto> get() {
 		
-		//criar uma instância da classe ModelMapper
-		var mapper = new ModelMapper();
-		
 		//consultar as categorias cadastradas no banco de dados		
 		var categorias = categoriaRepository.findAll();
-		
-		/*
-		var lista = new ArrayList<CategoriaResponseDto>();
-		for(var categoria : categorias) {
-			lista.add(mapper.map(categoria, CategoriaResponseDto.class));
-		}
-		return lista;		
-		*/
-		
+				
 		//copiando os dados de uma lista de categorias (entidade) 
 		//para uma lista da classe CategoriaResponseDto
 		return categorias //lista com as categorias do banco de dados
