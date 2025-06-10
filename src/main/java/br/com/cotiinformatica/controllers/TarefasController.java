@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.cotiinformatica.dtos.CategoriaResponseDto;
 import br.com.cotiinformatica.dtos.TarefaRequestDto;
 import br.com.cotiinformatica.dtos.TarefaResponseDto;
 import br.com.cotiinformatica.entities.Tarefa;
@@ -98,7 +97,7 @@ public class TarefasController {
 	
 	@GetMapping
 	@Operation(summary = "Consulta de tarefas", 
-           description = "Retorna as tarefas cadastradas no sistema..")
+           description = "Retorna as tarefas cadastradas no sistema.")
 	public List<TarefaResponseDto> get() {
 		
 		//consultar as tarefas cadastradas no banco de dados		
@@ -111,4 +110,23 @@ public class TarefasController {
 				.map(tarefa -> mapper.map(tarefa, TarefaResponseDto.class)) //copiando para o DTO
 				.collect(Collectors.toList()); //retornando a lista de DTOs		
 	}
+	
+	@GetMapping("{id}")
+	@Operation(summary = "Consulta de tarefa por ID", 
+		   description = "Retorna 1 tarefa baseado no ID informado.")
+	public TarefaResponseDto getById(@PathVariable UUID id) {
+	
+		//consultar 1 tarefa no banco de dados através do ID
+		var tarefa = tarefaRepository.findById(id)
+						.orElseThrow(() -> new IllegalArgumentException("Tarefa não encontrada."));
+		
+		//retornar os dados da tarefa
+		return mapper.map(tarefa, TarefaResponseDto.class);
+	}
 }
+
+
+
+
+
+
